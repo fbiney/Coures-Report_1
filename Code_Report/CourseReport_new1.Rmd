@@ -1,0 +1,654 @@
+---
+title: "Course Report"
+author: "Francis Biney"
+date: "May 2022"
+output:
+  pdf_document: default
+  html_notebook: default
+bibliography: ref.bib
+biblio-style: apalike
+link-citations: yes
+---
+
+
+
+```{r, echo = FALSE}
+setwd("C:/Users/fbiney/Desktop/WaterProj/CourseReport_new")
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+```{r, include= FALSE}
+
+# LIBRARIES----
+# Load Library----
+library(tidyverse)
+library(ggplot2)
+library(gridExtra)
+library(skimr)
+library(funModeling)
+library(gtsummary)
+library(DataExplorer)
+library(visdat)
+
+#library('tigris') # Census data manip.
+#options(tigris_use_cache = TRUE) # make download faster
+
+```
+
+
+```{r, include=FALSE}
+source("data.R", local = knitr::knit_global())
+```
+
+
+# Introduction
+
+In this work, we explore the distribution, correlations and effect of
+lead and wastewater exposure in El Paso communities (census tract) using
+geospatial heat maps and data from the climate and Economic Justice Tool
+(CEJT) initiative [website](https://screeningtool.geoplatform.gov/en/about). The CEJT tool is a Biden-Harris
+Administration's project to help address inequity and inequality by
+assisting federal agencies in identifying disadvantaged communities that
+are marginalized, underserved, and overburdened by pollution
+[(CEJT 2022)](https://www.federalregister.gov/documents/2021/02/01/2021-02177/tackling-the-climate-crisis-at-home-and-abroad#:~:text=Sec.%20223.%20Justice40,40-percent%20goal.). We also provided feedback on features that we thought were
+great, features that we would like to see, and roadblocks we encountered
+while implementing the Climate and Economic Justice Tool (CEJT)in it
+beta phase from github.
+
+# Exploration of CEJT for EL Paso county.
+
+Figure 1 shows the CEJT result for a community in El Paso with zip code
+79968. It contains information such as the census tract id, the county,
+state, population, and whether or not the the community is classified as
+disadvantaged. The community is identified as not disadvantaged because
+it was not disadvantaged in any of the eight categories.
+
+![**FIGURE
+1**](C:%5CUsers%5Cfbiney%5CDesktop%5CWaterProj%5CCourseReport_new%5CElpasoCejt2.PNG)
+
+[CEJT
+Tool](https://screeningtool.geoplatform.gov/en/#9.89/31.812/-106.4175)
+
+# Summary of CEJT Tool
+
+In this section, we provide a summary of what we would like to see, the
+features we thought were great, and the roadblocks we encountered during
+the Climate and Economic Justice Tool implementation process (CEJT).
+
+### Feed back on what can be improved
+
+To better analyze, understand and respond to the need of communities,
+here are the feature we will like to see in the application:
+
+1.  A filter that allows users to change the binary scale (disadvantage
+    or not ) to a discrete scale $(0,1, …,8)$, where 0 means not
+    disadvantaged, 1 means least disadvantage and 8 means most
+    disadvantaged community, that is disadvantaged in all 8 categories.
+    This will allow the user to easily identify highly disadvantaged
+    communities when prioritizing funding.
+
+2.  A filter that allows users to filter by categories such as water
+    infrastructure within a county. This will help users to know which
+    communities(census tract) are most affected by a given category. For
+    example, if a user wants to prioritize funding for water
+    infrastructure she/he should be able to filter to see which tracts
+    in the community are affected. This will also help community groups
+    to better understand the different types of challenges they face and
+    the type of funding they should apply for.
+
+3.  The data used for the Economic injustice analysis did not include
+    race/ethnicity. I believe there is an association between the
+    dominant race in a community and their health, environmental and
+    socioeconomic needs. The analyses and application will be more
+    informative if the race data is included.
+
+4.  To better understand the effect of lead on communities, information
+    on lead pipes use in the communities need to be included and be used
+    in the analysis not only lead paint.
+
+5.  A button to display/highlight the effect on health measures and life
+    expectancy of a disadvantaged community given the category. For
+    example, what is the general life expectancy for people in the
+    community given their lead exposure level?
+
+6.  Provide code snippets or interactive applets that allow non-tech
+    users to explore their own questions on different data.
+
+### Point of Implimenttion
+
+On the implementation of the Climate and Economic Justice Tool (CEJT) in
+its beta stage from Github, here are our roadblocks:
+
+1.  The installation of the application from the Github repository is
+    not user-friendly, and non-tech users will find it hard or almost
+    impossible to get the application to work. it requires a lot of
+    technical know-how and youtube time. It took me about a week to get
+    the application to run on my local computer.
+
+2.  To get the application to run on my local computer
+
+    a.  Install git on my windows computer
+
+    b.  Clone (copy) the directory (folder) from Github to my local
+        computer
+
+    c.  Install docker on windows
+
+        i.  Install/Set up WSL2 (windows subsystem for linux 2)
+        ii. Install Ubuntu on Windows
+        iii. Download and install docker
+
+## 
+
+Finally, here are the features we liked and thought were great. The
+application was intuitive to use once the installation was done. A good
+description of the methodology and data used is available on the
+localhost. This allowed for answering further questions that were not
+addressed in the application. On the technical end, I appreciated the
+opportunity to install and run Docker for the first time. This has given
+me the experience to work in a similar framework in the future
+
+# Research Question (What we Did)
+
+-   Where in El Paso (census tract) has higher% of lead paint exposure.
+
+-   Where in El Paso (census tract) has higher % waste water discharge
+    exposure.
+
+-   What is the effect of higher% of lead paint exposure on the health
+    of the community.
+
+-   What is the effect of higher% of waste water discharge exposure on
+    the health of community.
+
+# Literature Review
+
+Lead pollution has been shown to be especially harmful in low-income
+neighborhoods and communities of color, according to the Center for
+Disease Control
+[(CDC, 2021)](https://www.cdc.gov/nceh/lead/prevention/populations.htm).
+Children who live in lower income neighborhoods or communities of color
+are more likely to be exposed to lead based paint, dust, or soil than
+their higher income peers. These exposures have devastating effects on
+the growth and development of children's brains, and have been linked to
+behavioral issues such as attention deficit hyperactivity disorder
+ADHD [@needleman1982lead], poor school performance[@kuang2020adverse], poor memory[@arnvig1980neurotoxic],
+lower IQ scores[@needleman1990low], and reduced life expectancy in
+adults[@sandhya2016impact].
+
+El Paso is known to have a high concentration of lead in the air and
+soil[@darby2012lead]. This is due to heavy metal contamination caused by the
+extraction of lead, copper, and zinc from metal ore by the American
+Smelting and Refining Company (ASARCO) [@marcosson1949metal] from 1901 to
+1999, which was acquired by Grupo Mexico in 2009 and closed in 2009.
+[@darby2012lead]. Lead and arsenic persist in the region's soils
+[@alvarez2015comparison] and perhaps in people's bodies, ground, and surface
+water, despite the fact that the smelter is no longer in operation.
+
+Residents and regulatory agencies have focused on these two pollutants
+due to their health effects on children and the environment.
+
+Mielke and Reagan [@mielke1998soil] showed that lead is particularly troubling due
+to its propensity to settle in the soil, where it can be inhaled or
+ingested by humans. Long-term lead exposure reduces cognitive
+functioning, which can influence educational outcomes and economic
+opportunities [@schell1997culture]. 
+
+
+# Methodology
+
+Here we discuss the methods we used to answer these question. We focused
+on exploring the distribution, correlation and association between water
+quality related measures such as exposure to lead paint, exposure to
+wast water discharged and basic demographic measures including education
+level, socio-economics status, and health related measures such as
+percent diagnose Diabetes,percent diagnose Asthma, percent diagnose
+heart disease and life expectancy in the El Pose community. We did this
+using Numerical and graphical summaries such as box plot conditional bar
+graphs , Stacked bar Chart, mosaic plot and geospatial heat maps. The
+goal was to understand the effect of exposure to high lead pain and
+water waste disposal have on disadvantage communities.
+
+# Statistical Analyses
+
+#### Data
+
+The data use is available on the Climate and Economic Justice Screening
+Tool (CEJST)
+[website](https://screeningtool.geoplatform.gov/en/methodology) under
+methodology and data page, published on March 30,2022. The data contain
+74131 observations(rows) and 83 variables(Columns) with information on
+environmental, climate and socio-economic related measures. The measures
+include activities that adversely impact human health, climate and the
+environment such as use of lead paint, Traffic proximity, Proximity to
+hazardous waste site, diesel particulate matter exposure. It also has
+data on health related measures such as heart disease,asthma, diabetes
+and socio-economic measures such as low income,Unemployment, Poverty
+rate and higher education enrollment rate.The Target variable contains
+information on whether or not a community is disadvantage based on the
+criterior below. The (CEJST)
+[team](https://static-data-screeningtool.geoplatform.gov/data-pipeline/data/score/downloadable/cejst_technical_support_document.pdf)
+defined a community qualifies as disadvantaged if
+
+1.  the U.S. census tract is above the threshold for one or more
+    environmental or climate indicators, and
+2.  the U.S. census tract is above the threshold for the socioeconomic
+    indicators.
+
+These categories and threshold can be found on the (CEJST)
+[website](https://screeningtool.geoplatform.gov/en/methodology).
+Additional goeospatial data was obtained from the [*tigris
+package*](https://github.com/walkerke/tigris) in R, which was combined
+with (CEJST) data to create the El Paso map with the census tract. Below
+is first eight observations and columns in the data.
+
+
+
+
+```{r , echo=FALSE}
+#dim(dat1)
+#dat1 %>% head(10)
+dat1 %>% select(1:8) %>% head(8)
+#skim(dat)
+```
+
+#### Data Processin and Feature Enginerring
+
+The original data came from multiple source with long columns name so we
+gave the variable a shorter name. This was done using the *janitor
+package*in *R*. We then explore the 83 columns for water quality and
+basic demographics related measures such as lead and wasted water,
+income, Education level. El Paso county data was subset form the 74131
+original observations to 161.
+
+**Missing values Treatment**
+
+Very few observations $(3.1\%)$ were missing,so we dropped them from the
+data. Waste water discharged, life expectancy and media house hold
+income have most missing values ranging from $27\%,11.4\%$ and $6.2\%$
+respectively as shown in the figures below.
+
+```{r , echo=FALSE}
+# Plot the structure of the data 
+plot_intro(dat2, title = "Structure of the Data")
+
+```
+
+```{r , echo=FALSE}
+#library(visdat)
+vis_miss(dat2,warn_large_data = FALSE) # explore the missing data
+```
+
+**Feature Engineering**
+
+The logical variables *Lead.Paint*,*Proximity to hazard waste site* and
+*Proximity to waste water discharged* were re-coded as binary factor
+with categories *(yes,no)* for *(True,false)* respectively modeling
+purpose.
+
+#### Data Exploration and Summary
+
+**Water quality data**
+
+We performed exploratory data analysis on the El Paso data to understand
+the the distribution, correlations and association between the water
+quality and demographics variables. This was done by inspecting the data
+distribution for skewness, outliers, trends and also summarize the data
+into it main characteristics. From Table [###], about 63% of El Paso
+census tract were classified as disadvantaged communities and 37% [##]
+not by the CEJT formula [site] ?for deciding who is disadvantage and
+who is not?. Table [\*\*\*] below show that 5% of El Pasoans live in
+lead painted house ,24% close to waste water discharge area and none
+close to Hazard waste site. From Figure [###]...blue color. The
+distribution of the water wast contain mostly high values.
+
+```{r, echo=FALSE}
+
+p1<-EP_WQ_df %>% ggplot(aes(x=is_disAdvan,fill= is_disAdvan))+
+  geom_bar() +labs(x = "Disadvantage") +theme(legend.position="none")
+
+p2<-EP_WQ_df %>% ggplot(aes(x=Ld.Paint.gde90_LILE,fill= Ld.Paint.gde90_LILE))+
+  geom_bar()+labs(x = "Lead Paint >= 90%") +theme(legend.position="none")
+
+p3<-EP_WQ_df %>% ggplot(aes(x=prox.hazard.waste.facilit_gde90_LILE,fill= prox.hazard.waste.facilit_gde90_LILE))+
+  geom_bar()+labs(x = "Prox.Hazard waste site") +theme(legend.position="none")
+
+
+p4<-EP_WQ_df %>% ggplot(aes(x=wastewater.dischg.gde90_LILE,fill= wastewater.dischg.gde90_LILE))+
+  geom_bar()+labs(x = "Wastewater discharge >= 90%") +theme(legend.position="none")
+
+ggpubr::ggarrange(p1,p2,p4,nrow = 1,ncol = 3)
+
+#gridExtra::grid.arrange(p1,p2,p3,p4)
+
+```
+
+```{r  echo=FALSE}
+
+EP_WQ_df %>% 
+  select(is_disAdvan,Ld.Paint.gde90_LILE,prox.hazard.waste.facilit_gde90_LILE,wastewater.dischg.gde90_LILE) %>% 
+  rename( 'Disadvantage' = is_disAdvan,
+          'Lead Paint'= Ld.Paint.gde90_LILE,
+          'Wastewater discharge >= 90%'=wastewater.dischg.gde90_LILE,
+          'Prox. to Harzd. site'=prox.hazard.waste.facilit_gde90_LILE
+          ) %>% 
+ tbl_summary() %>% 
+ bold_labels() %>%
+ add_n() %>%
+ modify_header(stat_0 ~ "**n(%)**") 
+```
+
+```{r, echo=FALSE, warning=FALSE}
+EP_WQ_df %>% 
+  select(Ld.paint.1960.ptil,prox.hazard.waste.site.ptil,wastewater.dischg.ptil) %>% 
+  rename( 'Lead Pain' = Ld.paint.1960.ptil,
+          'Prox. to Hazard Waste site'= prox.hazard.waste.site.ptil,
+          'Wastewater dischgarge'=wastewater.dischg.ptil ) %>% 
+  plot_num()
+```
+
+```{r  echo=FALSE}
+EP_WQ_df %>% 
+  select(Ld.paint.1960.ptil,prox.hazard.waste.site.ptil,wastewater.dischg.ptil) %>% 
+  rename( 'Lead Pain Exp. > 90th' = Ld.paint.1960.ptil,
+          'Prox. to Hazard Waste site'= prox.hazard.waste.site.ptil,
+          'Wastewater dischgarge'=wastewater.dischg.ptil ) %>% 
+  tbl_summary(
+    type = all_continuous() ~ "continuous2",
+    statistic = all_continuous() ~ c(#"{N_nonmiss}",
+                                     "{mean} ({sd})", 
+                                     "{median} ({p25}, {p75})"),
+  ) %>% 
+  add_n() %>% 
+  modify_header(stat_0 ~ "**Statistics**") %>% 
+  bold_labels()
+
+```
+
+**Demographics and Health Data**
+
+Table[]and Figure[], shows the summary statistics and distribution
+of El Paso demographic and health related data. From table[], about
+69% and 23% of the of the adult in the census tract are diagnose with
+diabetes and heart disease respectively.
+
+```{r echo=FALSE}
+  Demo_df %>% 
+  select(
+  #total_population, 
+  life.expectcy_yrs,
+  Diabetes.gde90_LILE,  
+  Heart.dis.gde90_LILE,
+  Diabetes.Adults.age18.diag.ptil,
+  Heart.dis.Adults.age18.ptil,
+  #unemplt.p.ptil
+) %>% 
+rename(
+       #'Total population' = total_population,
+       'Life Expectancy Yrs.' = life.expectcy_yrs,
+       #'Unemploymnet Percentile' = unemplt.p.ptil,   
+       'Diabetes'   = Diabetes.gde90_LILE, 
+       'Heart disease'  = Heart.dis.gde90_LILE,
+       'Diabetes Percentile'  = Diabetes.Adults.age18.diag.ptil,           
+       'Heart disease Percentile' = Heart.dis.Adults.age18.ptil               
+                               
+) %>%   
+tbl_summary(
+  type = all_continuous() ~ "continuous2",
+   statistic = all_continuous() ~ c(#"{N_nonmiss}",
+                                     "{mean} ({sd})", 
+                                     "{median} ({p25}, {p75})")
+) %>% 
+add_n() %>% 
+modify_header(stat_0 ~ "**Statistics**") %>% 
+bold_labels()
+
+```
+
+```{r, echo=FALSE, warning=FALSE}
+EP_Demo_df %>% 
+  select(
+         life.expectcy_yrs,
+         Diabetes.gde90_LILE,
+         Heart.dis.gde90_LILE,
+         Diabetes.Adults.age18.diag.ptil,
+         Heart.dis.Adults.age18.ptil) %>% 
+rename('Diabetes'   = Diabetes.gde90_LILE,
+       'Life Expectancy Yrs.' = life.expectcy_yrs,
+       'Heart disease'  = Heart.dis.gde90_LILE,
+       #'Unemploymnet Percentile' = unemplt.p.ptil,  
+       'Diabetes Percentile'  = Diabetes.Adults.age18.diag.ptil,           
+       'Heart disease Percentile' = Heart.dis.Adults.age18.ptil               
+                               
+)  %>% 
+  plot_num()
+```
+
+```{r, echo=FALSE}
+
+p1<-EP_Demo_df %>% ggplot(aes(x=Diabetes.gde90_LILE,fill= Diabetes.gde90_LILE))+
+  geom_bar() +labs(x = "Diabetes") +theme(legend.position="none")
+
+p2<-EP_Demo_df  %>% ggplot(aes(x=Heart.dis.gde90_LILE,fill= Heart.dis.gde90_LILE))+
+  geom_bar()+labs(x = "Heart disease") +theme(legend.position="none")
+
+p3<-EP_Demo_df  %>% ggplot(aes(x=Low.life.expectcy.gde90_LILE,fill= Low.life.expectcy.gde90_LILE))+
+  geom_bar(size=2)+labs(x = "LLE") +theme(legend.position="none")
+
+
+
+ggpubr::ggarrange(p1,p2,p3,nrow = 1,ncol = 3)
+
+
+```
+
+## Application and Result
+
+### Visualization of Texas County and El Paso census Tract
+
+```{r echo=FALSE}
+plot(tx_county["NAME10"],main = "Texas County Map")
+plot(tx_tract["NAME10"],main = "El Paso Census tract")
+```
+
+### Visualizing Disadvantage Community(tract) by CEJST criterion
+
+To understands which communities in El Paso are disadvantaged by (CEJST)
+criterion we made geospatial heat maps for El Paso census tract, showing
+whether the tract is a disadvantage or not. From table [], about 63%
+of El Paso communities are disadvantage *blue below*. Here a community
+identified as disadvantaged if disadvantaged in at least one of the
+eight categories
+[ref](https://screeningtool.geoplatform.gov/en/methodology#:~:text=Under%20the%20current,the%20socioeconomic%20indicators).
+
+```{r echo=FALSE}
+# Dis Adv or Not vs tract   ----------------------------
+g1<-ggplot(WQ_tract_tbl, aes(fill = is_disAdvan)) + 
+  geom_sf()+
+  labs(title='Disadvantage vs Non-Disadv. In EL Paso')
+
+
+g1 + scale_fill_discrete(name="Disadvantage")
+
+```
+
+To highlight El Paso communities that are most disadvantaged we create a
+heat map with 0 meaning not disadvantaged, 1- least disadvantage and 8
+means most disadvantaged community.
+
+```{r echo=FALSE}
+# Total_categories Exceeded vs vs tract   ------
+g2 <- ggplot(WQ_tract_tbl, aes(fill = T_cat_exceded)) + 
+  geom_sf()+
+  #scale_fill_gradient(low='#56B1F7',mid=high = '#132B43')
+  scale_fill_gradient2(low='blue',mid='white',high = 'red',name="Total Categories Exceeded")+
+  labs(title='Total Categories Exceeded')
+
+g2
+  
+```
+
+### Visualizing Communities with water quatlity problem
+
+**Lead paint Exposure**
+
+```{r echo=FALSE}
+# High % Lead paint vs tract --------
+
+g3<-ggplot(WQ_tract_tbl, aes(fill = Ld.Paint.gde90_LILE)) + 
+  geom_sf()+
+  labs(title='El Paso Communities with and without lead Pain Exposure')
+
+
+g3+ scale_fill_discrete(name="Lead Exposure")
+
+#----bY------------
+#library(mapview)
+#mapview(WQ_tract_tbl,zcol="Ld.Paint.gde90_LILE")
+
+```
+
+**waste water Exposure**
+
+```{r echo=FALSE}
+# Waste water Dischr vs tract ----------------------------
+
+g4<-ggplot(WQ_tract_tbl, aes(fill = wastewater.dischg.gde90_LILE  )) + 
+  geom_sf()+
+  labs(title='El Paso Communities with and without waste water Exposure',
+       caption = "FIGURE 10")
+
+g4+ scale_fill_discrete(name="Waste Water Exposure")
+
+
+
+#----bY------------
+#mapview(WQ_tract_tbl,zcol="wastewater.dischg.gde90_LILE")
+```
+
+### Effect of high% lead Piant Exposure
+
+The box plots in Figure 0 below show significant differences in medical
+conditions between whether communities live in lead-painted houses or
+not. From the box plots, communities that live in lead-painted houses
+have a high number of adults diagnosed with diabetes, heart disease and
+have low life expectancy.
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+library(ggpubr)
+
+EP_WQ_Demo_df <- EP_Demo_df %>% 
+  mutate(Lead = EP_WQ_df$Ld.Paint.gde90_LILE)
+
+
+
+
+p1 <- EP_WQ_Demo_df %>% 
+  ggplot(aes(x=Lead,y=life.expectcy_yrs ,fill=Lead))+
+  geom_boxplot() + labs(y = "Life Expect. Yrs.") +theme(legend.position="none")
+
+
+p2<- EP_WQ_Demo_df %>% 
+  ggplot(aes(x=Lead,y=Diabetes.Adults.age18.diag ,fill=Lead))+
+  geom_boxplot()  + labs(y = "Adult diagnosed diabetes") +theme(legend.position="none")
+
+
+
+
+p3<- EP_WQ_Demo_df %>% 
+  ggplot(aes(x=Lead,y= Heart.dis.Adults.age18    ,fill=Lead))+
+  geom_boxplot() + labs(y = "Adullt diagnosed heart disease.") +theme(legend.position="none")
+
+
+plt<- ggarrange(p2,p3,p1, ncol=3, nrow=1, common.legend = TRUE,legend="bottom")
+
+```
+
+```{r echo = FALSE}
+annotate_figure(plt, top = text_grob("Lead's effect Medical on Condition", 
+               color = "black", face = "bold", size = 14),
+               fig.lab = "FIGURE 0", fig.lab.face = "bold")
+               
+```
+
+### Effect of high% waste water discharge on life Expectancey, Diabetie and Heart Disease
+
+The box plots in Figure 1 below show significant differences in medical
+conditions between communities living near wastewater discharge and
+communities far from wastewater discharge. From the box plots,
+communities that live close to wastewater discharge have a high number
+of adults diagnosed with diabetes, heart disease, and low life
+expectancy.
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+
+
+EP_WQ_Demo_df <- EP_Demo_df %>% 
+  mutate(Lead = EP_WQ_df$Ld.Paint.gde90_LILE,
+         'Waste water' = EP_WQ_df$wastewater.dischg.gde90_LILE)
+
+
+
+pp1 <- EP_WQ_Demo_df %>% 
+  ggplot(aes(x=`Waste water`,y=life.expectcy_yrs ,fill=`Waste water`))+
+  geom_boxplot() + labs(y = "Life Expect. Yrs.") +theme(legend.position="none")
+
+
+pp2<- EP_WQ_Demo_df %>% 
+  ggplot(aes(x=`Waste water`,y=Diabetes.Adults.age18.diag ,fill=`Waste water`))+
+  geom_boxplot()  + labs(y = "Adult diagnosed diabetes") +theme(legend.position="none")
+
+
+
+
+pp3<- EP_WQ_Demo_df %>% 
+  ggplot(aes(x=`Waste water`,y= Heart.dis.Adults.age18    ,fill=`Waste water`))+
+  geom_boxplot() + labs(y = "Adullt diagnosed heart disease.") +theme(legend.position="none")
+
+
+plt2<- ggarrange(pp2,pp3,pp1, ncol=3, nrow=1, common.legend = TRUE,legend="bottom")
+
+
+```
+
+```{r echo = FALSE}
+annotate_figure(plt2, top = text_grob("Waste water's effect Medical on Condition", 
+               color = "black", face = "bold", size = 14),
+               fig.lab = "FIGURE 1", fig.lab.face = "bold")
+
+```
+
+# Conclusion 
+This work explores the distribution, correlation, and effect of exposure to lead and wastewater on heart disease, diabetes, and life expectancy in El Paso communities. We accomplished this by using geospatial heat maps, boxplot, data from the CEJT initiative, and the Tigris package for CRAN. 
+
+In our exploration and analysis, we observed that communities with high exposure to lead and wastewater tend to have a higher number of people diagnosed with diabetes and heart disease. These communities also have low life expectancies relative to unexposed communities. We also observed that most communities with high lead exposure also have high wastewater exposure.
+
+# Suggestion
+
+The analysis will be more informative if communities with lead pipes are included in the data. Other suggestions include:
+
+-   Statistical Analysis to justify whether a significant difference exists between the groups compared
+
+-   Model the $above.90th.percentile.PM2.5$ using binomial logit model with other columns as predictors.
+
+
+-   Model the $above.90th.percentile.lead.paint.exposure$ using binomial logit model with other columns as predictors.
+
+
+-   Find features that are top predictors of disadvantageous communities.
+
+-   Model the $Total.categories.exceeded$ using the proportional odds model.
+
+
+
+
+# Reference
+
+
+
