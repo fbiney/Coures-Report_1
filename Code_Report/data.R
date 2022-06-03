@@ -1,9 +1,6 @@
 # Data
 
 
-  
-
-
 # Load Library----
 library(tidyverse)
 library(ggplot2)
@@ -12,13 +9,9 @@ library(skimr)
 library(funModeling)
 
 
-
-
-
-
-
 # Load  original Data
 
+setwd("C:/Users/fbiney/Desktop/WaterProj/Coures-Report_1/Code_Report")
 
 dat <- read_csv("communities_03_30_003.csv")
 names(dat) # or  colnames(dat) 
@@ -372,7 +365,6 @@ tx_tract_2 <- tx_tract %>%
 WQ_tract_tbl <- tx_tract_2 %>%
   left_join(EP_WQ_df, by = c("id" = "id")) #%>% 
 #drop_na()
-
 
 
 
