@@ -3,6 +3,11 @@ title: "Course Report"
 author: "Francis Biney"
 date: "May 2022"
 output:
+<<<<<<< HEAD
+=======
+#  html_notebook: default
+#  pdf_document: default
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
   bookdown::pdf_document2: default
   bookdown::html_document2: default
 bibliography: ref.bib
@@ -73,8 +78,13 @@ state, population, and whether or not the the community is classified as
 disadvantaged. The community is identified as not disadvantaged because
 it was not disadvantaged in any of the eight categories defined by CEJST team [(CEJST 2022)](https://screeningtool.geoplatform.gov/en/methodology#:~:text=Under%20the%20current,the%20socioeconomic%20indicators).
 
+<<<<<<< HEAD
 ![Screening tool output for Zip code 79938 in ElPaso
 ](C:%5CUsers%5Cfbiney%5CDesktop%5CWaterProj%5CCourseReport_new%5CElpasoCejt2.PNG)
+=======
+![**Screening tool for Zip code 79938 in ElPaso
+**](C:%5CUsers%5Cfbiney%5CDesktop%5CWaterProj%5CCourseReport_new%5CElpasoCejt2.PNG)
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 
 [CEJST Tool](https://screeningtool.geoplatform.gov/en/#9.89/31.812/-106.4175)
 
@@ -213,8 +223,13 @@ wast water discharged and basic demographic measures including education
 level, socio-economics status, and health related measures such as
 percent adult diagnose Diabetes,Asthma, 
 Heart disease and life expectancy in the El Pose community. We did this
+<<<<<<< HEAD
 using numerical and graphical summaries such as box plot conditional bar
 graphs, and geospatial heat maps. The
+=======
+using Numerical and graphical summaries such as box plot conditional bar
+graphs, Stacked bar Chart, mosaic plot and geospatial heat maps. The
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 goal was to understand the effect of exposure to high lead pain and
 wastewater exposure have on disadvantaged communities in El Paso.
 
@@ -254,17 +269,27 @@ shows the first eight observations and columns in the data.
 
 
 
+<<<<<<< HEAD
 ```{r tab1, echo=FALSE, message=FALSE, warning=FALSE}
+=======
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 #dim(dat1)
 #dat1 %>% head(10)
 #dat1 %>% select(1:8) %>% head(8)
 #skim(dat)
 library(knitr)
+<<<<<<< HEAD
 dat1 %>% select(1:8) %>% head(8) %>% kable(caption = "First eight observations and columns ")
 ```
 
 
 
+=======
+dat1 %>% select(1:8) %>% head(8) %>% kable()
+```
+
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 ### Data Processin and Feature Enginerring
 
 The original data came from multiple source with long columns name so we
@@ -280,17 +305,44 @@ original observations to 161.
 Very few observations $(3.1\%)$ were missing,so we dropped them from the
 data. Wastewater discharged, life expectancy and media house hold
 income have most missing values ranging from $27\%,11.4\%$ and $6.2\%$
+<<<<<<< HEAD
 respectively as shown in the figures \@ref(fig:fig2) and \@ref(fig:fig3).
 
 
 ```{r fig2,echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Data structure Distribution ",fig.height=3, fig.width=7}
+=======
+respectively as shown in the figures 2 and 3 below.
+
+
+```{r fig1,echo=FALSE, message=FALSE, warning=FALSE,fig.cap="plotting example"}
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 # Plot the structure of the data 
 plot_intro(dat2, title = "Structure of the Data")
 
 ```
 
+<<<<<<< HEAD
 
 ```{r fig3,fig.cap="Missing values heat map " , echo=FALSE,message = FALSE, warning=FALSE}
+=======
+in Figure \@ref(fig:fig1) we see examples of plotting in R
+
+
+
+
+
+```{r cars-plot, fig.cap="A plot caption"}
+plot(cars)  # a scatterplot
+```
+
+
+in Figure \@ref(fig:cars-plot) we see examples of plotting in R
+
+
+
+
+```{r , echo=FALSE,message = FALSE, warning=FALSE}
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 #library(visdat)
 vis_miss(dat2,warn_large_data = FALSE) # explore the missing data
 ```
@@ -303,10 +355,16 @@ with categories *(yes,no)* for *(True,false)* respectively for modeling
 purpose.
 
 ### Data Exploration and Summary
+<<<<<<< HEAD
+=======
+
+**Water quality data**
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 
 We performed exploratory data analysis on the El Paso data to understand
 the the distribution, correlations and association between the water
 quality and demographics variables. This was done by inspecting the data
+<<<<<<< HEAD
 distribution for patterns, trends and also summarize the data
 into it main characteristics. 
 
@@ -323,6 +381,20 @@ distribution of the wastewater contain mostly high values see figure \@ref(fig:f
 
 
 ```{r fig4,fig.cap="Distibution of disadvatage communities in El Paso, exposure to lead Paint and wastewater",fig.height=3, fig.width=7,message=FALSE, warning=FALSE, echo=FALSE}
+=======
+distribution for skewness, outliers, trends and also summarize the data
+into it main characteristics. From table **[??]**, about 63% of El Paso
+census tract were classified as disadvantaged communities and 37%
+not by the CEJST formula (CEJST 2022) for deciding  disadvantage communities. 
+Table **[??]** below show that 5% of El Pasoans live in
+lead painted house ,24% close to wastewater discharge area and none
+close to Hazard waste site. This also shown in  figure **[??]**...blue color. The
+distribution of the wastewater contain mostly high values.
+
+
+
+```{r,fig.height=3, fig.width=7,message=FALSE, warning=FALSE, echo=FALSE}
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 #fig.height=3, fig.width=10,
 
 p1<-EP_WQ_df %>% ggplot(aes(x=is_disAdvan,fill= is_disAdvan))+
@@ -345,6 +417,7 @@ ggpubr::ggarrange(p1,p2,p4,nrow = 1,ncol = 3)
 
 ```
 
+<<<<<<< HEAD
 
 ```{r fig5,fig.cap="Distribtion of the percentile of El Paso communities exposed to lead paint, Harzard waste and wastewater", echo=FALSE, warning=FALSE,message = FALSE,fig.height=3, fig.width=7}
 EP_WQ_df %>% 
@@ -356,6 +429,9 @@ EP_WQ_df %>%
 ```
 
 ```{r tab2,echo=FALSE,message = FALSE}
+=======
+```{r,echo=FALSE,message = FALSE}
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 
 EP_WQ_df %>% 
   select(is_disAdvan,Ld.Paint.gde90_LILE,prox.hazard.waste.facilit_gde90_LILE,wastewater.dischg.gde90_LILE) %>% 
@@ -371,8 +447,21 @@ EP_WQ_df %>%
  modify_caption("Summary statistics of data distibution ")
 ```
 
+<<<<<<< HEAD
 
 ```{r tab3,echo=FALSE,message = FALSE}
+=======
+```{r , echo=FALSE, warning=FALSE,message = FALSE,fig.height=3, fig.width=7}
+EP_WQ_df %>% 
+  select(Ld.paint.1960.ptil,prox.hazard.waste.site.ptil,wastewater.dischg.ptil) %>% 
+  rename( 'Lead Pain' = Ld.paint.1960.ptil,
+          'Prox. to Hazard Waste site'= prox.hazard.waste.site.ptil,
+          'Wastewater dischgarge'=wastewater.dischg.ptil ) %>% 
+  plot_num()
+```
+
+```{r,echo=FALSE,message = FALSE}
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 EP_WQ_df %>% 
   select(Ld.paint.1960.ptil,prox.hazard.waste.site.ptil,wastewater.dischg.ptil) %>% 
   rename( 'Lead Pain Exp. > 90th' = Ld.paint.1960.ptil,
@@ -399,6 +488,7 @@ Table \@ref(tab:tab22), figures \@ref(fig:fig6) and \@ref(fig:fig7), shows the s
 43% and 14% of the of the adult in the census tract are diagnose with
 diabetes and heart disease respectively.
 
+<<<<<<< HEAD
 
 ```{r fig7,fig.cap="Distibution of Low, Life Expectancy, Diabetes and Heart disease in El Paso community", echo=FALSE,message = FALSE,fig.height=3, fig.width=7}
 
@@ -418,6 +508,42 @@ ggpubr::ggarrange(p11,p22,p33,nrow = 1,ncol = 3)
 
 
 ```{r fig6,fig.cap="Distribtion of the percentile of El Paso communities for Life Expectancy, Diabetes and Heart disease ", echo=FALSE, warning=FALSE,message = FALSE,fig.height=3, fig.width=7}
+=======
+```{r,echo=FALSE,message = FALSE}
+  Demo_df %>% 
+  select(
+  #total_population, 
+  life.expectcy_yrs,
+  Diabetes.gde90_LILE,  
+  Heart.dis.gde90_LILE,
+  Diabetes.Adults.age18.diag.ptil,
+  Heart.dis.Adults.age18.ptil,
+  #unemplt.p.ptil
+) %>% 
+rename(
+       #'Total population' = total_population,
+       'Life Expectancy Yrs.' = life.expectcy_yrs,
+       #'Unemploymnet Percentile' = unemplt.p.ptil,   
+       'Diabetes'   = Diabetes.gde90_LILE, 
+       'Heart disease'  = Heart.dis.gde90_LILE,
+       'Diabetes Percentile'  = Diabetes.Adults.age18.diag.ptil,           
+       'Heart disease Percentile' = Heart.dis.Adults.age18.ptil               
+                               
+) %>%   
+tbl_summary(
+  type = all_continuous() ~ "continuous2",
+   statistic = all_continuous() ~ c(#"{N_nonmiss}",
+                                     "{mean} ({sd})", 
+                                     "{median} ({p25}, {p75})")
+) %>% 
+add_n() %>% 
+modify_header(stat_0 ~ "**Statistics**") %>% 
+bold_labels()
+
+```
+
+```{r, echo=FALSE, warning=FALSE,message = FALSE,fig.height=3, fig.width=7}
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 EP_Demo_df %>% 
   select(
          life.expectcy_yrs,
@@ -436,6 +562,19 @@ rename('Diabetes'   = Diabetes.gde90_LILE,
   plot_num()
 ```
 
+<<<<<<< HEAD
+=======
+```{r, echo=FALSE,message = FALSE,fig.height=3, fig.width=7}
+
+p1<-EP_Demo_df %>% ggplot(aes(x=Diabetes.gde90_LILE,fill= Diabetes.gde90_LILE))+
+  geom_bar() +labs(x = "Diabetes") +theme(legend.position="none")
+
+p2<-EP_Demo_df  %>% ggplot(aes(x=Heart.dis.gde90_LILE,fill= Heart.dis.gde90_LILE))+
+  geom_bar()+labs(x = "Heart disease") +theme(legend.position="none")
+
+p3<-EP_Demo_df  %>% ggplot(aes(x=Low.life.expectcy.gde90_LILE,fill= Low.life.expectcy.gde90_LILE))+
+  geom_bar(size=2)+labs(x = "LLE") +theme(legend.position="none")
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 
 
 \pagebreak
@@ -463,7 +602,13 @@ f1+
 
 ```
 
+<<<<<<< HEAD
 
+=======
+# Application and Result
+
+## Visualization of Texas County and El Paso census Tract
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 
 ```{r fig82,fig.cap="El Paso Census tract ", echo=FALSE,fig.height=3.3, fig.width=7}
 #,fig.height=3, fig.width=7
@@ -471,9 +616,12 @@ f1+
 plot(tx_tract["NAME10"],main = "El Paso Census tract")
 ```
 
+<<<<<<< HEAD
 \newpage
 
 
+=======
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 ## Visualizing Disadvantage Community(tract) by CEJST criterion
 
 To understands which communities in El Paso are disadvantaged by (CEJST)
@@ -482,7 +630,11 @@ whether the tract is disadvantaged or not. From table \@ref(tab:tab2), about 63%
 of El Paso communities are disadvantage, the blue area in figure \@ref(fig:fig9) below. Here a community is
 identified as disadvantaged if it is  disadvantaged in at least one of the
 eight categories
+<<<<<<< HEAD
 [(CEJST 2022)](https://screeningtool.geoplatform.gov/en/methodology#:~:text=Under%20the%20current,the%20socioeconomic%20indicators).
+=======
+[CEJST 2022](https://screeningtool.geoplatform.gov/en/methodology#:~:text=Under%20the%20current,the%20socioeconomic%20indicators).
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 
 ```{r fig9,fig.cap="El Paso census trac by Disadvantage Communities, TX ", echo=FALSE}
 # Dis Adv or Not vs tract   ----------------------------
@@ -516,7 +668,10 @@ g2
   
 ```
 
+<<<<<<< HEAD
 \newpage
+=======
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 ## Visualizing Communities with water quatlity problem
 
 Here we define community to have water quality problem if they are exposed to lead paint or wastewater.
@@ -541,6 +696,7 @@ g3+ scale_fill_discrete(name="Lead Exposure")
 
 ```
 
+<<<<<<< HEAD
 \newpage
 
 ### Wastewater Exposure
@@ -548,6 +704,11 @@ g3+ scale_fill_discrete(name="Lead Exposure")
 Figure \@ref(fig:fig12) shows the heat map of El Paso communities exposed to wastewater discharge. Table 2, about 24% of the El Paso communities are exposed to wastewater discharge, shown in blue in figure \@ref(fig:fig12). This area also covers the communities exposed to lead and the most disadvantaged in figures \@ref(fig:fig10) and \@ref(fig:fig11)
 
 ```{r fig12,fig.cap="El Paso census trac by wastewater Exposure ", echo=FALSE}
+=======
+**wastewater Exposure**
+
+```{r echo=FALSE}
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 # wastewater Dischr vs tract ----------------------------
 
 g4<-ggplot(WQ_tract_tbl, aes(fill = wastewater.dischg.gde90_LILE  )) + 
@@ -563,7 +724,11 @@ g4+ scale_fill_discrete(name="wastewater Exposure")
 #mapview(WQ_tract_tbl,zcol="wastewater.dischg.gde90_LILE")
 ```
 
+<<<<<<< HEAD
 \newpage
+=======
+## Effect of high% lead Piant Exposure
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 
 ## Effect of high% lead Piant and wastewater Exposure
 
@@ -616,8 +781,12 @@ annotate_figure(plt, top = text_grob("Lead's effect Medical on Condition",
                
 ```
 
+<<<<<<< HEAD
 \newpage
 ### Effect of high% wastewater discharge on life Expectancey, Diabetie and Heart Disease
+=======
+## Effect of high% wastewater discharge on life Expectancey, Diabetie and Heart Disease
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 
 Figure \@ref(fig:fig15) shows significant differences in medical condition between communities living near and far from wastewater discharge. Communities living near wastewater discharge had a high percentage of adults diagnosed with diabetes, heart disease, and a short life expectancy, according to the box plots.
 ```{r ,message=FALSE, warning=FALSE, include=FALSE}
@@ -651,9 +820,16 @@ plt2<- ggarrange(pp2,pp3,pp1, ncol=3, nrow=1, common.legend = TRUE,legend="botto
 
 ```
 
+<<<<<<< HEAD
 ```{r fig15,fig.cap="Effect of wastewater on diabetes,heart diseaseand life expectancy in El Paso", echo = FALSE}
 annotate_figure(plt2, top = text_grob("wastewater's effect Medical on Condition", 
                color = "black", face = "bold", size = 14))
+=======
+```{r echo = FALSE}
+annotate_figure(plt2, top = text_grob("wastewater's effect Medical on Condition", 
+               color = "black", face = "bold", size = 14),
+               fig.lab = "FIGURE 1", fig.lab.face = "bold")
+>>>>>>> 366c2c71cc05c35f1711abced8f34da9142743a5
 
 ```
 
